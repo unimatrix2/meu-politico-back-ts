@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-import AppError from '../errors/AppError';
 
 export const handle404 = (req: Request, res: Response) => {
     res.status(404).json({
