@@ -4,8 +4,8 @@ export default class AppError extends Error {
     status: number;
     stack: any;
 
-    constructor(message: string,
-        type: string, status: number, stack?: any) {
+    constructor(message?: string,
+        type?: string, status?: number, stack?: any) {
         super(message);
 
         this.message = message || 'Ops! Ocorreu um erro. Tente novamente mais tarde.';
