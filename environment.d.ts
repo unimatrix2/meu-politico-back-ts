@@ -1,3 +1,5 @@
+import { Secret } from "jsonwebtoken";
+
 declare global {
 	namespace NodeJS {
 		interface ProcessEnv {
@@ -5,7 +7,7 @@ declare global {
 			FRONT_END_URL: string;
 			MONGODB_URI: string;
 			COOKIE_SECRET: string;
-			TOKEN_SECRET: string;
+			TOKEN_SECRET: Secret;
 			TOKEN_EXPIRATION: string;
 			COOKIE_EXPIRY: number
       }
