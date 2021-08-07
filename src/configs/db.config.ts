@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 const mongoConnect = (url: string) => {
 	mongoose.connect(url, {
+		useCreateIndex: true,
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 	})
