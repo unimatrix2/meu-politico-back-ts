@@ -1,7 +1,5 @@
 import { Schema, model } from "mongoose";
 import joi from "joi";
-import AppError from "../errors/AppError";
-import { NextFunction } from "express";
 
 const userSchema = new Schema(
 	{
@@ -12,17 +10,10 @@ const userSchema = new Schema(
 		password: { type: String, required: true, min: 8, max: 200 },
 		role: {
 			type: String,
-			enum: ["usuário", "moderador", "admin"],
+			enum: ['usuário', 'moderador', 'admin'],
 			required: true,
-			default: "usuário",
-		},
-		imageURL: {
-			type: String,
-			default:
-				"https://www.ecp.org.br/wp-content/uploads/2017/12/default-avatar.png",
-		},
-		news: [{ type: Schema.Types.ObjectId, ref: "News" }],
-		politicos: [{ type: Schema.Types.ObjectId, ref: "Politico" }],
+			default: 'usuário',
+		}
 	},
 	{ timestamps: true }
 );
@@ -39,52 +30,15 @@ const userSchemaValidation = {
 		.pattern(/[A-Z0-9]/),
 };
 
-const signupSchema = joi
+export const signupSchema = joi
 	.object(userSchemaValidation)
 	.options({ abortEarly: false });
 
-const loginSchema = joi
+export const loginSchema = joi
 	.object({
 		cpf: userSchemaValidation.cpf,
 		password: userSchemaValidation.password,
 	})
 	.options({ abortEarly: false });
-
-export const validateSignupParams = (req: Request, res: Response, nxt: NextFunction) => {
-	const joiValidation = signupSchema.validate(req.body);
-
-	if (joiValidation.error) {
-		const errorObj = joiValidation.error.details.reduce((acc: any, err: any) => {
-            if (err.context?.label) {
-                acc[err.context.label] = err.message;
-                return acc;
-            }
-		}, {});
-		throw new AppError(
-			JSON.stringify(errorObj),
-			"Erro-Validação-Signup",
-			400,
-		);
-	}
-	return nxt();
-};
-
-export const validateLoginParams = (req: Request, res: Response, nxt: NextFunction) => {
-	const joiValidation = loginSchema.validate(req.body);
-
-	if (joiValidation.error) {
-		const errorObj = joiValidation.error.details.reduce((acc: any, error: any) => {
-			acc[error.context.label] = error.message;
-	
-			return acc;
-		}, {});
-		throw new AppError(
-			JSON.stringify(errorObj),
-			"Erro-Validação-Login",
-			400
-		);
-	}
-	return nxt();
-};
 
 export const User = model('User', userSchema);
