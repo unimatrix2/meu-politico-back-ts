@@ -1,5 +1,11 @@
 import bcrypt from 'bcrypt';
 
-export const encrypt = (plainTextPassword: string) => bcrypt.hashSync(plainTextPassword, 10);
+export const encrypt = async (plainTextPassword: string) => {
+    const encrypted: string = await bcrypt.hash(plainTextPassword, 10);
+    return encrypted;
+};
 
-export const verify = (plainTextPassword: string, hash: string) => bcrypt.compareSync(plainTextPassword, hash);
+export const verify = async (plainTextPassword: string, hash: string) => {
+    const validation = await bcrypt.compare(plainTextPassword, hash);
+    return validation;
+};
