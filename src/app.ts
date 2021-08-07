@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser';
 import mongoSanitize from 'express-mongo-sanitize';
 
 import mongoConnect from './configs/db.config';
+import routerHub from './routes/router';
 import { handleError, handle404 } from './middlewares/errorHandler';
 
 dotenv.config();
@@ -25,7 +26,7 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(mongoSanitize());
 
 // API Routes Setup
-
+app.use('/api', routerHub)
 // Error Handling
 app.use(handle404);
 
