@@ -9,7 +9,7 @@ import mongoSanitize from 'express-mongo-sanitize';
 
 import mongoConnect from './configs/db.config';
 import routerHub from './routes/router';
-import { handleError, handle404 } from './middlewares/errorHandler';
+import { handle404 } from './middlewares/errorHandler';
 
 dotenv.config();
 
