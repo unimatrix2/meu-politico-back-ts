@@ -13,3 +13,12 @@ export const verify = (token: string): any => {
         );
     }
 };
+
+export const generate = (id: string) => {
+    const token = jwt.sign(
+        { id },
+        process.env.TOKEN_SECRET,
+        { expiresIn: process.env.TOKEN_EXPIRATION }
+    );
+    return token;
+}
