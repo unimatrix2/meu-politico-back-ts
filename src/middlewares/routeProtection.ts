@@ -3,12 +3,12 @@ import AppError from '../errors/AppError';
 import { verify } from '../utils/tokenManager';
 
 export const routeProtection = (req: any, res: Response, nxt: NextFunction) => {
-    const token = req.get('Authorization');
+    const { token } = req.signedCookies;
 
     if (!token) {
         throw new AppError(
-            'Não há credenciais de acesso',
-            'Acesso-Sem-Credencial',
+            'Não há credenciais de acesso, ou as credenciais são inválidas',
+            'Acesso-Credencial-Invalida-Ou-Inexistente',
             401
         );
     }
@@ -19,12 +19,10 @@ export const routeProtection = (req: any, res: Response, nxt: NextFunction) => {
         decodedToken = verify(token);
         req.user = { id: decodedToken.id };
     } catch (error) {
-        return nxt(
-            new AppError(
-                'Acesso expirado',
-                'Acesso-Expirado',
-                401
-            )
+        throw new AppError(
+            'Acesso expirado',
+            'Acesso-Expirado',
+            401
         );
     }
     return nxt();
