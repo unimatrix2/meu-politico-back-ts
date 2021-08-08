@@ -35,3 +35,8 @@ export interface userUpdateData {
 export interface userUpdateBody extends userUpdateData {
     password: string
 }
+
+export interface newCredentials {
+    userData: userLoginReturnData;
+    newToken: string;
+}
