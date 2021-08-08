@@ -2,12 +2,12 @@ import { routeProtection } from './../../middlewares/routeProtection';
 import { Router } from 'express';
 
 import AppError from '../../errors/AppError';
-import * as politicoService from '../../services/politico.service';
+// import * as politicoService from '../../services/politico.service';
 
 const router = Router();
 
 // Início das rotas públicas
-router.get('/buscar', async (req, res, next) => {
+/* router.get('/buscar', async (req, res, next) => {
 	try {
 			const { busca } = req.query;
 
@@ -29,10 +29,10 @@ try {
 } catch (error) {
 	return next(new AppError(error));
 }
-});
+}); */
 
 // Início das rotas privadas
-router.use(routeProtection);
+/* router.use(routeProtection);
 
 router.post('/criar', async (req, res, next) => {
   try {
@@ -66,6 +66,6 @@ router.put('/editar/:id',  async (req, res, next) => {
   } catch (error) {
     return next(new AppError(error));
   }
-});
+}); */
 
 export default router;
