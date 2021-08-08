@@ -1,7 +1,6 @@
 import { postUpdateMapper, userUpdatePayloadMapper } from './../mappers/userUpdate.mapper';
-import jwt from 'jsonwebtoken';
 import { cpf } from 'cpf-cnpj-validator';
-
+import { generate } from '../utils/tokenManager';
 import AppError from '../errors/AppError';
 import { encrypt, verify } from '../utils/passwordManager';
 import {
@@ -16,7 +15,8 @@ import {
     userSignupData,
     userDbReturnData,
     userLoginReturnData,
-    userLoginData
+    userLoginData,
+    newCredentials
 } from './../interfaces/user.d';
 
 export const verifyExistingUser = async (cpf: string, email: string) => {
@@ -112,7 +112,7 @@ export const authenticateUser = async (credentials: userLoginData) => {
                 401
             );
         }
-        const passwordVerification = verify(credentials.password, user.password);
+        const passwordVerification = await verify(credentials.password, user.password);
         if (!passwordVerification) {
             throw new AppError(
                 'CPF ou senha incorretos',
@@ -120,14 +120,22 @@ export const authenticateUser = async (credentials: userLoginData) => {
                 401
             );
         }
-        const token = jwt.sign(
-            { id: user._id },
-            process.env.TOKEN_SECRET,
-            { expiresIn: process.env.TOKEN_EXPIRATION }
-        );
+        return generate(user._id);
+    } catch (err) {
+        throw new AppError(err.message, err.type, err.status);
+    }
+}
 
-        return token;
+export const provideNewSessionInfo = async (id: string): Promise<newCredentials> => {
+    try {
+        const userData = await provideLoggedUserInfo(id);
+        const newToken = generate(id);
+        return { userData, newToken };
     } catch (error) {
-        
+        throw new AppError(
+            'Credenciais inválidas, por favor realize login novamente',
+            'Sessao-Credenciais-Invalidas',
+            401
+        );
     }
 }
