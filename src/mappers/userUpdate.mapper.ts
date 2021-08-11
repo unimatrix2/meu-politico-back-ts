@@ -1,7 +1,12 @@
-import { userUpdateBody, userUpdateData, userDbReturnData, userLoginReturnData } from './../interfaces/user.d';
+import {
+    userUpdateBody,
+    userDbReturnData,
+    IUserUpdatePayload,
+    userLoginReturnData
+} from './../interfaces/user.d';
 
-export const userUpdatePayloadMapper = (body: userUpdateBody): userUpdateData => {
-    const updatePayload: userUpdateData = {
+export const userUpdatePayloadMapper = (body: userUpdateBody): IUserUpdatePayload => {
+    const updatePayload: IUserUpdatePayload = {
         email: body.email,
         firstName: body.firstName,
         lastName: body.lastName
