@@ -87,16 +87,26 @@ export const register = async (body: userSignupData): Promise<void> => {
     }
 }
 
-export const updateUserInfo = async (body: userUpdateBody): Promise<userLoginReturnData> => {
+export const updateUserInfo = async (body: any): Promise<newCredentials> => {
     try {
-        const user = await confirmAuthorizationFind(body.email);
+        const user = await confirmAuthorizationFind(body.cpf);
         const authorization = await verify(body.password, user.password);
-        let updatedUser = await update(
-            userUpdatePayloadMapper(body),
-            user._id
-        );
-        updatedUser = postUpdateMapper(updatedUser);
-        return updatedUser;
+        switch(authorization) {
+            case true:
+                let userData = await update(
+                    userUpdatePayloadMapper(body),
+                    user._id
+                );
+                userData = postUpdateMapper(userData);
+                const newToken = generate(user._id);
+                return { userData, newToken };
+            case false:
+                throw new AppError(
+                    'Senha incorreta',
+                    'Usuario-Atualizar-Senha',
+                    400
+                );
+        }
     } catch (err) {
         throw new AppError(err.message, err.type, err.status);
     }
