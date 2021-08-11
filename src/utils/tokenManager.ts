@@ -14,7 +14,7 @@ export const verify = (token: string): any => {
     }
 };
 
-export const generate = (id: string) => {
+export const generate = (id: string): string => {
     const token = jwt.sign(
         { id },
         process.env.TOKEN_SECRET,
