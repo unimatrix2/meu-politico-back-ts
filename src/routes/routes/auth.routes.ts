@@ -1,6 +1,11 @@
 import { NextFunction, Response, Router } from 'express';
-import {validateSignupParams, validateLoginParams} from '../../middlewares/authValidation';
-import { register, authenticateUser, provideNewSessionInfo  } from '../../services/auth.service';
+import { validateSignupParams, validateLoginParams } from '../../middlewares/authValidation';
+import {
+    register,
+    updateUserInfo ,
+    authenticateUser,
+    provideNewSessionInfo
+} from '../../services/auth.service';
 import { routeProtection } from '../../middlewares/routeProtection';
 import { newCredentials } from '../../interfaces/user';
 
@@ -48,6 +53,23 @@ router.get('/token', async (req: any, res: Response, nxt: NextFunction) => {
             }).json(user.userData);
     } catch (error) {
         res.status(error.status).clearCookie('token').json(error);
+    }
+});
+
+router.post('/update/info', async (req: any, res: Response) => {
+    try {
+        const updatedUser = await updateUserInfo(req.body);
+        res.status(200).cookie(
+            'token',
+            updatedUser.newToken, {
+                secure: true,
+                signed: true,
+                httpOnly: true,
+                sameSite: true,
+                maxAge: process.env.COOKIE_EXPIRY
+            }).json(updatedUser.userData);
+    } catch (error) {
+        res.status(error.status).json(error);
     }
 })
 
