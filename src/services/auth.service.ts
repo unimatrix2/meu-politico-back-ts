@@ -19,7 +19,7 @@ import {
     newCredentials
 } from './../interfaces/user.d';
 
-export const verifyExistingUser = async (cpf: string, email: string) => {
+export const verifyExistingUser = async (cpf: string, email: string): Promise<boolean | undefined> => {
     const user: userDbReturnData = await findByCpf(cpf);
     if (user) {
         if (user.cpf === cpf && user.email === email) {
@@ -40,7 +40,7 @@ export const verifyExistingUser = async (cpf: string, email: string) => {
     }
 }
 
-export const provideLoggedUserInfo = async (id: string) => {
+export const provideLoggedUserInfo = async (id: string): Promise<userLoginReturnData> => {
     try {
         const user: userLoginReturnData = await findById(id);
         return user;
@@ -49,7 +49,7 @@ export const provideLoggedUserInfo = async (id: string) => {
     }
 }
 
-export const register = async (body: userSignupData) => {
+export const register = async (body: userSignupData): Promise<void> => {
     try {
         const cpfValidation = cpf.isValid(body.cpf);
         if (!cpfValidation) {
@@ -87,7 +87,7 @@ export const register = async (body: userSignupData) => {
     }
 }
 
-export const updateUserInfo = async (body: userUpdateBody) => {
+export const updateUserInfo = async (body: userUpdateBody): Promise<userLoginReturnData> => {
     try {
         const user = await confirmAuthorizationFind(body.email);
         const authorization = await verify(body.password, user.password);
@@ -102,7 +102,7 @@ export const updateUserInfo = async (body: userUpdateBody) => {
     }
 }
 
-export const authenticateUser = async (credentials: userLoginData) => {
+export const authenticateUser = async (credentials: userLoginData): Promise<string> => {
     try {
         const user = await findByCpf(credentials.cpf);
         if (!user) {
