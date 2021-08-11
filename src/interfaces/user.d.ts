@@ -22,7 +22,7 @@ export interface userLoginReturnData {
 export interface userDbReturnData extends userLoginReturnData {
     _id: string,
     password: string,
-    createdAt: date,
+    createdAt: Date,
     updatedAt: Date
 }
 
@@ -39,4 +39,9 @@ export interface userUpdateBody extends userUpdateData {
 export interface newCredentials {
     userData: userLoginReturnData;
     newToken: string;
+}
+
+export interface userPasswordConfirmation {
+    _id: string,
+    password: string
 }
