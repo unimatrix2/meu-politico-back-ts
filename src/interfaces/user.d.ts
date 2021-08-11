@@ -11,6 +11,12 @@ export interface userSignupData {
     firstName: string;
 }
 
+export interface IUserUpdatePayload {
+    email: string;
+    lastName: string;
+    firstName: string;
+}
+
 export interface userLoginReturnData {
     cpf: string;
     role: string;
@@ -27,6 +33,7 @@ export interface userDbReturnData extends userLoginReturnData {
 }
 
 export interface userUpdateData {
+    cpf: string;
     email: string;
     firstName: string;
     lastName: string;
