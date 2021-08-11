@@ -1,7 +1,7 @@
 import {
     userSignupData,
-    userUpdateData,
     userDbReturnData,
+    IUserUpdatePayload,
     userLoginReturnData,
     userPasswordConfirmation
 } from '../interfaces/user.d';
@@ -9,12 +9,19 @@ import AppError from "../errors/AppError";
 import { User } from "../models/User.model";
 import { postUpdateMapper } from '../mappers/userUpdate.mapper';
 
-export const confirmAuthorizationFind = async (email: string): Promise<userPasswordConfirmation> => {
+export const confirmAuthorizationFind = async (cpf: string): Promise<userPasswordConfirmation> => {
     try {
-        const userPwdHash: userPasswordConfirmation = await User.findOne({ email }, {
+        const userPwdHash: userPasswordConfirmation = await User.findOne({ cpf }, {
             _id: 1,
             password: 1
         });
+        if (!userPwdHash) {
+            throw new AppError(
+                'Usuário não encontrado',
+                'Usuario-Autalizar-Dados',
+                400
+            );
+        }
         return userPwdHash;
     } catch (err) {
         throw new AppError(
@@ -85,7 +92,7 @@ export const save = async (body: userSignupData): Promise<false | string[]> => {
     }
 }
 
-export const update = async (body: userUpdateData, id: string): Promise<any> => {
+export const update = async (body: IUserUpdatePayload, id: string): Promise<any> => {
     try {
         const updatedUser = await User.findByIdAndUpdate(
             id,
