@@ -1,12 +1,17 @@
-import { userUpdateData } from './../interfaces/user.d';
-import { userSignupData, userDbReturnData, userLoginData, userLoginReturnData } from '../interfaces/user';
+import {
+    userSignupData,
+    userUpdateData,
+    userDbReturnData,
+    userLoginReturnData,
+    userPasswordConfirmation
+} from '../interfaces/user.d';
 import AppError from "../errors/AppError";
 import { User } from "../models/User.model";
 import { postUpdateMapper } from '../mappers/userUpdate.mapper';
 
-export const confirmAuthorizationFind = async (email: string) => {
+export const confirmAuthorizationFind = async (email: string): Promise<userPasswordConfirmation> => {
     try {
-        const userPwdHash = await User.findOne({ email }, {
+        const userPwdHash: userPasswordConfirmation = await User.findOne({ email }, {
             _id: 1,
             password: 1
         });
@@ -20,7 +25,7 @@ export const confirmAuthorizationFind = async (email: string) => {
     }
 }
 
-export const findByCpf = async (cpf: string) => {
+export const findByCpf = async (cpf: string): Promise<userDbReturnData> => {
     try {
         const user: userDbReturnData = await User.findOne({ cpf });
         return user;
@@ -33,7 +38,7 @@ export const findByCpf = async (cpf: string) => {
     }
 }
 
-export const findById = async (id: string) => {
+export const findById = async (id: string): Promise<userLoginReturnData> => {
     try {
         const user: userLoginReturnData = await User.findById(id, {
             _id: 0,
@@ -55,7 +60,7 @@ export const findById = async (id: string) => {
     }
 }
 
-export const save = async (body: userSignupData) => {
+export const save = async (body: userSignupData): Promise<false | string[]> => {
     try {
         const newUser = new User(body);
         await newUser.save();
@@ -80,7 +85,7 @@ export const save = async (body: userSignupData) => {
     }
 }
 
-export const update = async (body: userUpdateData, id: string) => {
+export const update = async (body: userUpdateData, id: string): Promise<any> => {
     try {
         const updatedUser = await User.findByIdAndUpdate(
             id,
