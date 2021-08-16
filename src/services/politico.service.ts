@@ -6,11 +6,5 @@ export const createPolitico = async (body: politicoCreateBody) => {
     try {
         await create(body);
         return;
-    } catch (error: any) {
-        throw new AppError(
-            error.message,
-            error.type,
-            error.status
-        );
-    }
+    } catch (err: any) { throw new AppError(err) }
 };

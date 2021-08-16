@@ -6,11 +6,11 @@ export const routeProtection = (req: any, res: Response, nxt: NextFunction) => {
     const { token } = req.signedCookies;
 
     if (!token) {
-        throw new AppError(
-            'Não há credenciais de acesso, ou as credenciais são inválidas',
-            'Acesso-Credencial-Invalida-Ou-Inexistente',
-            401
-        );
+        throw new AppError({
+            message: 'Não há credenciais de acesso, ou as credenciais são inválidas',
+            type: 'Acesso-Credencial-Invalida-Ou-Inexistente',
+            status: 401
+        });
     }
 
     let decodedToken;
@@ -19,11 +19,11 @@ export const routeProtection = (req: any, res: Response, nxt: NextFunction) => {
         decodedToken = verify(token);
         req.user = { id: decodedToken.id };
     } catch (error) {
-        throw new AppError(
-            'Acesso expirado',
-            'Acesso-Expirado',
-            401
-        );
+        throw new AppError({
+            message: 'Acesso expirado',
+            type: 'Acesso-Expirado',
+            status: 401
+        });
     }
     return nxt();
 }

@@ -42,11 +42,11 @@ export const search = async (query: string) => {
 	}
 	return null;
   } catch (error) {
-    throw new AppError(
-      'Não foi possível buscar os políticos',
-      'Politico-Repo-Buscar',
-      500
-    );
+    throw new AppError({
+      message: 'Não foi possível buscar os políticos',
+      type: 'Politico-Repo-Buscar',
+      status: 500
+    });
   }
 };
 
@@ -65,11 +65,11 @@ export const getOne = async (id: string) => {
 			currentPosition: 1,
 		});
 	} catch (error) {
-		throw new AppError(
-			'Não foi possível encontrar o político',
-			'Politico-Repo-Encontrar-ID',
-			500
-		);
+		throw new AppError({
+			message: 'Não foi possível encontrar o político',
+			type: 'Politico-Repo-Encontrar-ID',
+			status: 500
+    });
 	}
 };
 
@@ -80,10 +80,10 @@ export const create = async (body: politicoCreateBody) => {
 		await politico.save();
 		return;
 	} catch (error) {
-		throw new AppError(
-			'Não foi possível criar o político',
-			'Politico-Criar',
-			500
-		);
+		throw new AppError({
+			message: 'Não foi possível criar o político',
+			type: 'Politico-Criar',
+			status: 500
+    });
 	}
 };

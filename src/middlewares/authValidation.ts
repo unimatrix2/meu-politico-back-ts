@@ -12,11 +12,11 @@ export const validateSignupParams = (req: any, res: Response, nxt: NextFunction)
                 return acc;
             }
 		}, {});
-		throw new AppError(
-			JSON.stringify(errorObj),
-			"Erro-Validação-Signup",
-			400,
-		);
+		throw new AppError({
+			message: errorObj,
+			type: "Erro-Validação-Signup",
+			status: 400
+		});
 	}
 	return nxt();
 };
@@ -30,11 +30,11 @@ export const validateLoginParams = (req: any, res: Response, nxt: NextFunction) 
 	
 			return acc;
 		}, {});
-		throw new AppError(
-			JSON.stringify(errorObj),
-			"Erro-Validação-Login",
-			400
-		);
+		throw new AppError({
+			message: errorObj,
+			type: "Erro-Validação-Login",
+			status: 400
+		});
 	}
 	return nxt();
 };

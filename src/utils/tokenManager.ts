@@ -6,11 +6,11 @@ export const verify = (token: string): any => {
         const verified =  jwt.verify(token, process.env.TOKEN_SECRET);
         return verified;
     } catch (error) {
-        throw new AppError(
-            'Token Inválido',
-            'Acesso-Token-Inválido',
-            401
-        );
+        throw new AppError({
+            message: 'Token Inválido',
+            type: 'Acesso-Token-Inválido',
+            status: 401
+        });
     }
 };
 

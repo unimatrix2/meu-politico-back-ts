@@ -40,13 +40,7 @@ router.post('/criar', async (req: any, res: Response, next: NextFunction) => {
     const newPolitico = {...req.body, owner: req.user.id};
     await createPolitico(newPolitico);
     return res.status(201).json({ message: 'Success!' });
-  } catch (error: any) {
-    throw new AppError(
-      error.message,
-      error.type,
-      error.status
-    )
-  }
+  } catch (err: any) { res.status(err.status).json(err) }
 });
 
 /* router.get('/lista', async (req, res, nxt) => {
