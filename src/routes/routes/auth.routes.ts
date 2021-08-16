@@ -56,7 +56,7 @@ router.get('/token', async (req: any, res: Response, nxt: NextFunction) => {
     }
 });
 
-router.post('/update/info', async (req: any, res: Response) => {
+router.post('/atualizar/dados', async (req: any, res: Response) => {
     try {
         const updatedUser = await updateUserInfo(req.body);
         res.status(200).cookie(
