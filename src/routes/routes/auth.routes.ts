@@ -16,7 +16,7 @@ router.post('/registro', validateSignupParams, async (req: any, res: Response, n
         const { body } = req;
         await register(body);
         res.status(201).json({ message: 'Usuário criado com sucesso!' });
-    } catch (error) {
+    } catch (error: any) {
         res.status(error.status).json(error);
     }
 });
@@ -33,7 +33,7 @@ router.post('/acesso', validateLoginParams, async (req: any, res: Response, next
             sameSite: true,
             maxAge: process.env.COOKIE_EXPIRY
         }).status(200).json({ message: 'Sucesso!' });
-    } catch (error) {
+    } catch (error: any) {
         res.status(error.status).json(error);
     };
 });
@@ -51,7 +51,7 @@ router.get('/token', async (req: any, res: Response, nxt: NextFunction) => {
                 sameSite: true,
                 maxAge: process.env.COOKIE_EXPIRY
             }).json(user.userData);
-    } catch (error) {
+    } catch (error: any) {
         res.status(error.status).clearCookie('token').json(error);
     }
 });
@@ -68,7 +68,7 @@ router.post('/update/info', async (req: any, res: Response) => {
                 sameSite: true,
                 maxAge: process.env.COOKIE_EXPIRY
             }).json(updatedUser.userData);
-    } catch (error) {
+    } catch (error: any) {
         res.status(error.status).json(error);
     }
 })
