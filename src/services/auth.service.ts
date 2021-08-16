@@ -8,44 +8,25 @@ import {
     update,
     findById,
     findByCpf,
+    resetPassword,
     confirmAuthorizationFind
 } from '../repositories/user.repository';
 import {
+    userLoginData,
     userUpdateBody,
+    newCredentials,
     userSignupData,
     userDbReturnData,
     userLoginReturnData,
-    userLoginData,
-    newCredentials
+    userPasswordUpdateData
 } from './../interfaces/user.d';
-
-export const verifyExistingUser = async (cpf: string, email: string): Promise<boolean | undefined> => {
-    const user: userDbReturnData = await findByCpf(cpf);
-    if (user) {
-        if (user.cpf === cpf && user.email === email) {
-            throw new AppError(
-                'Usuário já cadastrado',
-                'Registro-Usuario-Cadastrado',
-                400
-            );
-        } else if (user.cpf === cpf && user.email !== email) {
-            throw new AppError(
-                'CPF já cadstrado',
-                'Registro-CPF-Cadastrado',
-                400
-            )
-        } else {
-            return false;
-        }
-    }
-}
 
 export const provideLoggedUserInfo = async (id: string): Promise<userLoginReturnData> => {
     try {
         const user: userLoginReturnData = await findById(id);
         return user;
     } catch (err: any) {
-        throw new AppError(err.message, err.type, err.status);
+        throw new AppError(err);
     }
 }
 
@@ -53,38 +34,19 @@ export const register = async (body: userSignupData): Promise<void> => {
     try {
         const cpfValidation = cpf.isValid(body.cpf);
         if (!cpfValidation) {
-            throw new AppError(
-                'CPF inválido',
-                'Registro-CPF-Invalido',
-                400
-            );
+            throw new AppError({
+                message: 'CPF inválido',
+                type: 'Registro-CPF-Invalido',
+                status: 400
+            });
         }
-        const existingUserValidation = await verifyExistingUser(
-            body.cpf,
-            body.email
-        );
-        if (!existingUserValidation) {
-            const newUser: userSignupData = {
-                ...body,
-                password: await encrypt(body.password)
-            };
-            const errors = await save(newUser);
-            if (errors) {
-                console.log(errors);
-                throw new AppError(
-                    JSON.stringify(errors),
-                    'Registro-AlgumBagulho-Existe',
-                    400
-                );
-            }
-        }
-    } catch (err: any) {
-        throw new AppError(
-            err.message,
-            err.type,
-            err.status
-        );
-    }
+        const newUser: userSignupData = {
+            ...body,
+            password: await encrypt(body.password)
+        };
+        await save(newUser);
+        return;
+    } catch (err: any) { throw new AppError(err) }
 }
 
 export const updateUserInfo = async (body: any): Promise<newCredentials> => {
@@ -101,39 +63,48 @@ export const updateUserInfo = async (body: any): Promise<newCredentials> => {
                 const newToken = generate(user._id);
                 return { userData, newToken };
             case false:
-                throw new AppError(
-                    'Senha incorreta',
-                    'Usuario-Atualizar-Senha',
-                    400
-                );
+                throw new AppError({
+                    message: 'Senha incorreta',
+                    type: 'Usuario-Atualizar-Senha',
+                    status: 400
+                });
         }
-    } catch (err: any) {
-        throw new AppError(err.message, err.type, err.status);
-    }
+    } catch (err: any) { throw new AppError(err) }
 }
 
-export const authenticateUser = async (credentials: userLoginData): Promise<string> => {
+export const updateUserPassword = async (body: userPasswordUpdateData) => {
+    try {
+        const user = await confirmAuthorizationFind(body.cpf);
+        const authorization = await verify(body.password, user.password);
+        switch (authorization) {
+            case true:
+                await resetPassword(user._id, await encrypt(body.newPassword));
+                break;
+            case false:
+                throw new AppError({
+                    message: 'Senha incorreta',
+                    type: 'Usuario-Recuperar-Senha',
+                    status: 400
+                });
+        }
+    } catch (err: any) { throw new AppError(err) }
+}
+
+export const authenticateUser = async (credentials: userLoginData): Promise<string | undefined> => {
     try {
         const user = await findByCpf(credentials.cpf);
-        if (!user) {
-            throw new AppError(
-                'CPF ou senha incorretos',
-                'Acesso-Credencial-Invalida',
-                401
-            );
+        if (user) {
+            const passwordVerification = await verify(credentials.password, user.password);
+            if (!passwordVerification) {
+                throw new AppError({
+                    message: 'CPF ou senha incorretos',
+                    type: 'Acesso-Credencial-Invalida',
+                    status: 401
+                });
+            }
+            return generate(user._id);
         }
-        const passwordVerification = await verify(credentials.password, user.password);
-        if (!passwordVerification) {
-            throw new AppError(
-                'CPF ou senha incorretos',
-                'Acesso-Credencial-Invalida',
-                401
-            );
-        }
-        return generate(user._id);
-    } catch (err: any) {
-        throw new AppError(err.message, err.type, err.status);
-    }
+    } catch (err: any) { throw new AppError(err) }
 }
 
 export const provideNewSessionInfo = async (id: string): Promise<newCredentials> => {
@@ -142,10 +113,10 @@ export const provideNewSessionInfo = async (id: string): Promise<newCredentials>
         const newToken = generate(id);
         return { userData, newToken };
     } catch (error) {
-        throw new AppError(
-            'Credenciais inválidas, por favor realize login novamente',
-            'Sessao-Credenciais-Invalidas',
-            401
-        );
+        throw new AppError({
+            message: 'Credenciais inválidas, por favor realize login novamente',
+            type: 'Sessao-Credenciais-Invalidas',
+            status: 401
+        });
     }
 }

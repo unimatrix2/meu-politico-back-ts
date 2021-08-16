@@ -7,7 +7,7 @@ import {
 } from '../interfaces/user.d';
 import AppError from "../errors/AppError";
 import { User } from "../models/User.model";
-import { postUpdateMapper } from '../mappers/userUpdate.mapper';
+import userCreateErrorMapper from '../mappers/userCreateError.mapper';
 
 export const confirmAuthorizationFind = async (cpf: string): Promise<userPasswordConfirmation> => {
     try {
@@ -16,33 +16,24 @@ export const confirmAuthorizationFind = async (cpf: string): Promise<userPasswor
             password: 1
         });
         if (!userPwdHash) {
-            throw new AppError(
-                'Usuário não encontrado',
-                'Usuario-Autalizar-Dados',
-                400
-            );
+            throw new AppError({
+                message: 'Usuário não encontrado',
+                type: 'Usuario-Autalizar',
+                status: 400
+            });
         }
         return userPwdHash;
-    } catch (err: any) {
-        throw new AppError(
-            err.message,
-            'Usuario-Busca-Email',
-            400
-        );
-    }
+    } catch (err: any) { throw new AppError(err) }
 }
 
-export const findByCpf = async (cpf: string): Promise<userDbReturnData> => {
+export const findByCpf = async (cpf: string): Promise<userDbReturnData | null> => {
     try {
         const user: userDbReturnData = await User.findOne({ cpf });
+        if (!user) {
+            return null;
+        }
         return user;
-    } catch (err: any) {
-        throw new AppError(
-            err.message,
-            'Usuario-Busca-Cpf',
-            undefined,
-        );
-    }
+    } catch (err: any) { throw new AppError(err) }
 }
 
 export const findById = async (id: string): Promise<userLoginReturnData> => {
@@ -55,39 +46,32 @@ export const findById = async (id: string): Promise<userLoginReturnData> => {
             lastName: 1,
             firstName: 1
         });
+        if (!user) {
+            throw new AppError({
+                message: 'Usuário não encontrado',
+                type: 'Usuario-Busca-ID',
+                status: 400
+            });
+        }
         return user;
-        
     } catch (err: any) {
-        throw new AppError(
-        err.message,
-        'Usuario-Busca-Id',
-        undefined,
-        Error.captureStackTrace(err)
-        );
+        throw new AppError(err);
     }
 }
 
-export const save = async (body: userSignupData): Promise<false | string[]> => {
+export const save = async (body: userSignupData): Promise<false | undefined> => {
     try {
         const newUser = new User(body);
         await newUser.save();
         return false;
     } catch (err: any) {
-        // PRECISA TESTAR TODO ESSE FLUXO!!!
-        if (
-            Object.keys(err.keyPattern)
-            && (Object.keys(err.keyPattern['email'])
-            || Object.keys(err.keyPattern['cpf']))
-        ) {
-            return Object.keys(err.keyValue);
-        } else {
-            console.log(err);
-            throw new AppError(
-                err.message,
-                undefined,
-                undefined,
-                Error.captureStackTrace(err)
-            );
+        if (err.keyValue) {
+            const errorKey = userCreateErrorMapper(err);
+            throw new AppError({
+                message: `${errorKey} já existe`,
+                type: `Usuario-Criar-${errorKey}`,
+                status: 400
+            });
         }
     }
 }
@@ -102,8 +86,43 @@ export const update = async (body: IUserUpdatePayload, id: string): Promise<any>
                 useFindAndModify: false
             }
         );
+        if (!updatedUser) {
+            throw new AppError({
+                message: 'Usuário não encontrado',
+                type: 'Usuario-Atualizar-Dados',
+                status: 400
+            });
+        }
         return updatedUser;
     } catch (err: any) {
-        throw new AppError(err.message, 'Atualizar-Usuario', undefined)
+        if (err.keyValue) {
+            const errorKey = userCreateErrorMapper(err);
+            throw new AppError({
+                message: `${errorKey} já existe`,
+                type: `Usuario-Atualizar-${errorKey}`,
+                status: 400
+            });
+        }
+        throw new AppError(err);
     }
+}
+
+export const resetPassword = async (id: string, password: string): Promise<undefined> => {
+    try {
+        const updatedUser = await User.findByIdAndUpdate(
+            id,
+            { password },
+            {
+                new: true,
+                useFindAndModify: false
+            });
+        if (!updatedUser) {
+            throw new AppError({
+                message: 'Não foi possível atualizar a senha do usuário',
+                type: 'Usuario-Recuperar-Senha',
+                status: 500
+            });
+        }
+        return;
+    } catch (err: any) { throw new AppError(err) }
 }
