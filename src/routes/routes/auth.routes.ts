@@ -2,8 +2,9 @@ import { NextFunction, Response, Router } from 'express';
 import { validateSignupParams, validateLoginParams } from '../../middlewares/authValidation';
 import {
     register,
-    updateUserInfo ,
+    updateUserInfo,
     authenticateUser,
+    updateUserPassword,
     provideNewSessionInfo
 } from '../../services/auth.service';
 import { routeProtection } from '../../middlewares/routeProtection';
@@ -40,7 +41,7 @@ router.post('/acesso', validateLoginParams, async (req: any, res: Response, next
 
 router.use(routeProtection);
 
-router.get('/token', async (req: any, res: Response, nxt: NextFunction) => {
+router.get('/acesso', async (req: any, res: Response, nxt: NextFunction) => {
     try {
         const user: newCredentials = await provideNewSessionInfo(req.user.id);
         res.status(200).cookie(
@@ -56,7 +57,7 @@ router.get('/token', async (req: any, res: Response, nxt: NextFunction) => {
     }
 });
 
-router.post('/atualizar/dados', async (req: any, res: Response) => {
+router.patch('/atualizar/dados', async (req: any, res: Response) => {
     try {
         const updatedUser = await updateUserInfo(req.body);
         res.status(200).cookie(
@@ -71,17 +72,15 @@ router.post('/atualizar/dados', async (req: any, res: Response) => {
     } catch (error: any) {
         res.status(error.status).json(error);
     }
-})
+});
 
-// ESSA ROTA SERÁ RETRABALHADA PARA PROVER SOMENTE ATUALIZAÇÃO DE INFO
-// E UMA OUTRA ROTA PROVERÁ A ATUALIZAÇÃO DE SENHA
-/* router.put('/privado/atualizar', async (req: any, res: Response, next: NextFunction) => {
+router.patch('/atualizar/senha', async (req: any, res: Response) => {
     try {
-        const { id } = req.user;
-        const updatedUser = req.body
-        const user = await authService.updateUser(updatedUser, id);
-        res.status(200).json();
-    } catch (error) { return next(new AppError(error)) }
-}) */
+        await updateUserPassword(req.body);
+        res.status(200).json({ message: 'Senha atualizada com sucesso!' });
+    } catch (error) {
+        res.status(error.status).json(error);
+    }
+});
 
 export default router;
