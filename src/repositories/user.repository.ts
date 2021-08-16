@@ -23,7 +23,7 @@ export const confirmAuthorizationFind = async (cpf: string): Promise<userPasswor
             );
         }
         return userPwdHash;
-    } catch (err) {
+    } catch (err: any) {
         throw new AppError(
             err.message,
             'Usuario-Busca-Email',
@@ -36,7 +36,7 @@ export const findByCpf = async (cpf: string): Promise<userDbReturnData> => {
     try {
         const user: userDbReturnData = await User.findOne({ cpf });
         return user;
-    } catch (err) {
+    } catch (err: any) {
         throw new AppError(
             err.message,
             'Usuario-Busca-Cpf',
@@ -57,7 +57,7 @@ export const findById = async (id: string): Promise<userLoginReturnData> => {
         });
         return user;
         
-    } catch (err) {
+    } catch (err: any) {
         throw new AppError(
         err.message,
         'Usuario-Busca-Id',
@@ -72,7 +72,7 @@ export const save = async (body: userSignupData): Promise<false | string[]> => {
         const newUser = new User(body);
         await newUser.save();
         return false;
-    } catch (err) {
+    } catch (err: any) {
         // PRECISA TESTAR TODO ESSE FLUXO!!!
         if (
             Object.keys(err.keyPattern)
@@ -103,7 +103,7 @@ export const update = async (body: IUserUpdatePayload, id: string): Promise<any>
             }
         );
         return updatedUser;
-    } catch (err) {
+    } catch (err: any) {
         throw new AppError(err.message, 'Atualizar-Usuario', undefined)
     }
 }
