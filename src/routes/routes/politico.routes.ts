@@ -1,8 +1,9 @@
-import { routeProtection } from './../../middlewares/routeProtection';
+import { NextFunction, Response } from 'express-serve-static-core';
 import { Router } from 'express';
 
+import { routeProtection } from './../../middlewares/routeProtection';
 import AppError from '../../errors/AppError';
-// import * as politicoService from '../../services/politico.service';
+import { createPolitico } from '../../services/politico.service';
 
 const router = Router();
 
@@ -17,9 +18,9 @@ const router = Router();
 	} catch (error) {
 			return next(new AppError(error));
 }
-});
+}); */
 
-router.get('/lista/:id', async (req, res, next) => {
+/* router.get('/lista/:id', async (req, res, next) => {
 try {
 	const { id } = req.params;
 
@@ -32,30 +33,31 @@ try {
 }); */
 
 // Início das rotas privadas
-/* router.use(routeProtection);
+router.use(routeProtection);
 
-router.post('/criar', async (req, res, next) => {
+router.post('/criar', async (req: any, res: Response, next: NextFunction) => {
   try {
-    const { id } = req.user;
-    const newPolitico = req.body; 
-
-    await politicoService.create(newPolitico, id);
-
-    return res.status(201).json();
-  } catch (error) {
-    return next(new AppError(error));
+    const newPolitico = {...req.body, owner: req.user.id};
+    await createPolitico(newPolitico);
+    return res.status(201).json({ message: 'Success!' });
+  } catch (error: any) {
+    throw new AppError(
+      error.message,
+      error.type,
+      error.status
+    )
   }
 });
 
-router.get('/lista', async (req, res, nxt) => {
+/* router.get('/lista', async (req, res, nxt) => {
   try {
       const politicos = await politicoService.getAll();
       res.status(200).json(politicos);
   } catch (error) { return nxt(new AppError(error)) };
-});
+}); */
 
 
-router.put('/editar/:id',  async (req, res, next) => {
+/* router.put('/editar/:id',  async (req, res, next) => {
   try {
     const { id } = req.params;
     const updateObject = req.body;
