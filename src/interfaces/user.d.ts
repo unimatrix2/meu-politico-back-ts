@@ -17,6 +17,12 @@ export interface IUserUpdatePayload {
     firstName: string;
 }
 
+export interface userPasswordUpdateData {
+    cpf: string;
+    password: string;
+    newPassword: string;
+}
+
 export interface userLoginReturnData {
     cpf: string;
     role: string;
