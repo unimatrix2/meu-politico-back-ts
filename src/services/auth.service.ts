@@ -44,7 +44,7 @@ export const provideLoggedUserInfo = async (id: string): Promise<userLoginReturn
     try {
         const user: userLoginReturnData = await findById(id);
         return user;
-    } catch (err) {
+    } catch (err: any) {
         throw new AppError(err.message, err.type, err.status);
     }
 }
@@ -78,7 +78,7 @@ export const register = async (body: userSignupData): Promise<void> => {
                 );
             }
         }
-    } catch (err) {
+    } catch (err: any) {
         throw new AppError(
             err.message,
             err.type,
@@ -107,7 +107,7 @@ export const updateUserInfo = async (body: any): Promise<newCredentials> => {
                     400
                 );
         }
-    } catch (err) {
+    } catch (err: any) {
         throw new AppError(err.message, err.type, err.status);
     }
 }
@@ -131,7 +131,7 @@ export const authenticateUser = async (credentials: userLoginData): Promise<stri
             );
         }
         return generate(user._id);
-    } catch (err) {
+    } catch (err: any) {
         throw new AppError(err.message, err.type, err.status);
     }
 }
