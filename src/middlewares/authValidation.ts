@@ -1,6 +1,6 @@
 import AppError from "../errors/AppError";
 import { NextFunction, Response } from "express";
-import { signupSchema, loginSchema } from '../models/User.model';
+import { signupSchema, loginSchema } from '../validations/user.validations';
 
 export const validateSignupParams = (req: any, res: Response, nxt: NextFunction) => {
 	const joiValidation = signupSchema.validate(req.body);

@@ -6,7 +6,7 @@ import {
     userPasswordConfirmation
 } from '../interfaces/user.d';
 import AppError from "../errors/AppError";
-import { User } from "../models/User.model";
+import User from "../models/User.model";
 import userCreateErrorMapper from '../mappers/userCreateError.mapper';
 
 export const confirmAuthorizationFind = async (cpf: string): Promise<userPasswordConfirmation> => {
