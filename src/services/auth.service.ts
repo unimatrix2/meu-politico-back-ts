@@ -13,10 +13,8 @@ import {
 } from '../repositories/user.repository';
 import {
     userLoginData,
-    userUpdateBody,
     newCredentials,
     userSignupData,
-    userDbReturnData,
     userLoginReturnData,
     userPasswordUpdateData
 } from './../interfaces/user.d';
