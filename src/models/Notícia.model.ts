@@ -18,4 +18,6 @@ const noticiaSchema = new Schema({
     lastEditBy: { type: Schema.Types.ObjectId, ref: 'User' }
 }, { timestamps: true });
 
-export const Noticia = model('News', noticiaSchema);
+const Noticia = model('News', noticiaSchema);
+
+export default Noticia;
