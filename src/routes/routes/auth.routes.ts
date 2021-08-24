@@ -78,7 +78,7 @@ router.patch('/atualizar/senha', async (req: any, res: Response) => {
     try {
         await updateUserPassword(req.body);
         res.status(200).json({ message: 'Senha atualizada com sucesso!' });
-    } catch (error) {
+    } catch (error: any) {
         res.status(error.status).json(error);
     }
 });
