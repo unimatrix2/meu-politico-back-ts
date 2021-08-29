@@ -17,9 +17,9 @@ const app = express();
 
 app.use(helmet());
 app.use(json());
-app.use(morgan('tiny'));
+app.use(morgan('dev'));
 app.use(cors({
-  origin: process.env.FRONT_END_URL,
+  origin: [process.env.FRONT_END_URL, 'http://127.0.0.1:3000'],
   credentials: true
 }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
