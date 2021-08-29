@@ -27,13 +27,13 @@ router.post('/acesso', validateLoginParams, async (req: any, res: Response, next
         const { body } = req;
 
         const loggedUser = await authenticateUser(body);
-        res.cookie('token', loggedUser, {
+        res.cookie('token', loggedUser?.newToken, {
             secure: true,
             signed: true,
             httpOnly: true,
             sameSite: true,
             maxAge: process.env.COOKIE_EXPIRY
-        }).status(200).json({ message: 'Sucesso!' });
+        }).status(200).json(loggedUser?.userData);
     } catch (error: any) {
         res.status(error.status).json(error);
     };
