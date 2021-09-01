@@ -48,7 +48,7 @@ router.get('/acesso', async (req: any, res: Response, nxt: NextFunction) => {
 			secure: true,
 			signed: true,
 			httpOnly: true,
-			sameSite: true,
+			sameSite: 'none',
 			maxAge: process.env.COOKIE_EXPIRY
 		}).json(user.userData);
 	} catch (error: any) {
@@ -63,7 +63,7 @@ router.patch('/atualizar/dados', async (req: any, res: Response) => {
 			secure: true,
 			signed: true,
 			httpOnly: true,
-			sameSite: true,
+			sameSite: 'none',
 			maxAge: process.env.COOKIE_EXPIRY
 		}).json(updatedUser.userData);
 	} catch (error: any) {
@@ -79,5 +79,9 @@ router.patch('/atualizar/senha', async (req: any, res: Response) => {
 		res.status(error.status).json(new AppError(error));
 	}
 });
+
+router.get('/logout', (req: any, res: Response) => {
+	res.clearCookie('token').status(200).json({ message: 'Sessão finalizada com sucesso!' })
+})
 
 export default router;
