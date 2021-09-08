@@ -2,7 +2,6 @@ import { NextFunction, Response } from 'express-serve-static-core';
 import { Router } from 'express';
 
 import { routeProtection } from './../../middlewares/routeProtection';
-import AppError from '../../errors/AppError';
 import { createPolitico } from '../../services/politico.service';
 
 const router = Router();
@@ -39,8 +38,10 @@ router.post('/criar', async (req: any, res: Response, next: NextFunction) => {
   try {
     const newPolitico = {...req.body, owner: req.user.id};
     await createPolitico(newPolitico);
-    return res.status(201).json({ message: 'Success!' });
-  } catch (err: any) { res.status(err.status).json(err) }
+    return res.status(201).json({ message: 'Político criado com sucesso! ' });
+  } catch (err: any) {
+    res.status(err.status).json(err);
+  }
 });
 
 /* router.get('/lista', async (req, res, nxt) => {
