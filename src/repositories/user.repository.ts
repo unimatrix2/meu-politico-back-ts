@@ -126,3 +126,20 @@ export const resetPassword = async (id: string, password: string): Promise<undef
         return;
     } catch (err: any) { throw new AppError(err) }
 }
+
+export const getUserPrivilege = async (id: string) => {
+    try {
+        const user = await User.findById(id, {
+            _id: 0,
+            role: 1
+        });
+        if (user) {
+            return user;
+        }
+        throw new AppError({
+            message: 'Usuário não encontrado',
+            type: 'Usuario-Privilegio',
+            status: 400
+        });
+    } catch (err: any) { throw new AppError(err) }
+}
