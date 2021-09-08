@@ -1,3 +1,9 @@
-const privilegesEnum: string[] = ['usuário', 'moderador', 'admin'];
+import { IPrivilegesEnum } from "../interfaces/enum";
+
+const privilegesEnum: IPrivilegesEnum[] = [
+    IPrivilegesEnum.Usr,
+    IPrivilegesEnum.Mod,
+    IPrivilegesEnum.Adm
+];
 
 export default privilegesEnum;

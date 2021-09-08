@@ -8,7 +8,7 @@ import moderationEnum from '../constants/moderation.enum';
 
 const politicoSchema = new Schema({
     fullName: { type: String, required: true, min: 10, max: 80 },
-    socialName: { type: String, required: true, max: 80 },
+    socialName: { type: String, max: 80 },
     currentPosition: {
         type: String,
         enum: electedPositionsEnum,
@@ -24,7 +24,8 @@ const politicoSchema = new Schema({
     status: {
         type: String,
         enum: moderationEnum,
-        required: true
+        required: true,
+        default: moderationEnum[0]
     },
     province: {
         type: String,

@@ -12,7 +12,7 @@ const userSchema = new Schema(
 			type: String,
 			enum: privilegesEnum,
 			required: true,
-			default: 'usuário',
+			default: privilegesEnum[0],
 		}
 	},
 	{ timestamps: true }
