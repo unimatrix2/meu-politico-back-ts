@@ -1,26 +1,29 @@
 import {
 	postUpdateMapper,
 	userUpdatePayloadMapper,
-} from "./../mappers/userUpdate.mapper";
-import { cpf } from "cpf-cnpj-validator";
-import { generate } from "../utils/tokenManager";
-import AppError from "../errors/AppError";
-import { encrypt, verify } from "../utils/passwordManager";
+} from './../mappers/userUpdate.mapper';
+import { cpf } from 'cpf-cnpj-validator';
+import { generate } from '../utils/tokenManager';
+import AppError from '../errors/AppError';
+import { encrypt, verify } from '../utils/passwordManager';
 import {
 	save,
 	update,
 	findById,
 	findByCpf,
 	resetPassword,
+	getUserPrivilege,
 	confirmAuthorizationFind,
-} from "../repositories/user.repository";
+} from '../repositories/user.repository';
 import {
 	userLoginData,
 	newCredentials,
 	userSignupData,
 	userLoginReturnData,
 	userPasswordUpdateData,
-} from "./../interfaces/user.d";
+} from './../interfaces/user.d';
+import privilegesEnum from '../constants/privileges.enum';
+import { IPrivilegesEnum } from '../interfaces/enum';
 
 export const provideLoggedUserInfo = async (
 	id: string
@@ -28,9 +31,7 @@ export const provideLoggedUserInfo = async (
 	try {
 		const user: userLoginReturnData = await findById(id);
 		return user;
-	} catch (err: any) {
-		throw new AppError(err);
-	}
+	} catch (err: any) { throw new AppError(err) }
 };
 
 export const register = async (body: userSignupData): Promise<void> => {
@@ -49,9 +50,7 @@ export const register = async (body: userSignupData): Promise<void> => {
 		};
 		await save(newUser);
 		return;
-	} catch (err: any) {
-		throw new AppError(err);
-	}
+	} catch (err: any) { throw new AppError(err) }
 };
 
 export const updateUserInfo = async (body: any): Promise<newCredentials> => {
@@ -71,9 +70,7 @@ export const updateUserInfo = async (body: any): Promise<newCredentials> => {
 					status: 400,
 				});
 		}
-	} catch (err: any) {
-		throw new AppError(err);
-	}
+	} catch (err: any) { throw new AppError(err) }
 };
 
 export const updateUserPassword = async (body: userPasswordUpdateData) => {
@@ -91,9 +88,7 @@ export const updateUserPassword = async (body: userPasswordUpdateData) => {
 					status: 400,
 				});
 		}
-	} catch (err: any) {
-		throw new AppError(err);
-	}
+	} catch (err: any) { throw new AppError(err) }
 };
 
 export const authenticateUser = async (
@@ -152,3 +147,18 @@ export const provideNewSessionInfo = async (
 		});
 	}
 };
+
+// Needs testing!
+export const checkUserPrivileges = async (
+	id: string,
+	...required: IPrivilegesEnum[]
+): Promise<boolean> => {
+
+	try {
+		const { role } = await getUserPrivilege(id);
+		if (required.includes(role)) {
+			return true;
+		}
+		return false;
+	} catch (err: any) { throw new AppError(err) }
+}
