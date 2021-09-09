@@ -10,7 +10,7 @@ export interface politicoCreateBody {
     fullName: string;
     socialName: string;
     currentPosition: string;
-    history?: historyBody[];
+    history: historyBody[];
     status: string;
     province: string;
     owner: string;
