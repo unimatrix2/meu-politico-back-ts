@@ -79,7 +79,14 @@ export const create = async (body: politicoCreateBody) => {
 		const politico = new Politico(body);
 		await politico.save();
 		return;
-	} catch (error) {
+	} catch (err: any) {
+    if (err.keyPattern.officialInfoURL || err.keyPattern.imageURL) {
+      throw new AppError({
+        message: 'Político já está cadastrado',
+        type: 'Politico-Criar',
+        status: 400
+      });
+    }
 		throw new AppError({
 			message: 'Não foi possível criar o político',
 			type: 'Politico-Criar',
