@@ -11,7 +11,7 @@ export interface politicoCreateBody {
     socialName: string;
     currentPosition: string;
     history: historyBody[];
-    status: string;
+    status?: string;
     province: string;
     owner: string;
     officialInfoURL: string;
