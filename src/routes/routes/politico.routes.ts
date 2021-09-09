@@ -36,8 +36,7 @@ router.use(routeProtection);
 
 router.post('/criar', async (req: any, res: Response, next: NextFunction) => {
   try {
-    const newPolitico = {...req.body, owner: req.user.id};
-    await createPolitico(newPolitico);
+    await createPolitico({ ...req.body, owner: req.user.id });
     return res.status(201).json({ message: 'Político criado com sucesso! ' });
   } catch (err: any) {
     res.status(err.status).json(err);
