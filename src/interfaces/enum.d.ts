@@ -14,19 +14,18 @@ export const enum IModerationEnum {
 }
 
 export const enum IStatesEnum {
-    'AC', 'AL', 'AP',
-    'AM', 'BA', 'CE',
-    'DF', 'ES', 'GO',
-    'MA', 'MT', 'MS',
-    'MG', 'PA', 'PB',
-    'PR', 'PE', 'PI',
-    'RJ', 'RN', 'RS',
-    'RO', 'RR', 'SC',
-    'SP', 'SE', 'TO'
+    AC = 'AC', AL = 'AL', AP = 'AP',
+    AM = 'AM', BA = 'BA', CE = 'CE',
+    DF = 'DF', ES = 'ES', GO = 'GO',
+    MA = 'MA', MT = 'MT', MS = 'MS',
+    MG = 'MG', PA = 'PA', PB = 'PB',
+    PR = 'PR', PE = 'PE', PI = 'PI',
+    RJ = 'RJ', RN = 'RN', RS = 'RS',
+    RO = 'RO', RR = 'RR', SC = 'SC',
+    SP = 'SP', SE = 'SE', TO = 'TO'
 }
 
 export const enum IPositionsEnum {
-    CDTO = 'Candidato',
     VRDR = 'Vereador',
     PFTO = 'Prefeito',
     DPES = 'Dep. Estadual',
@@ -36,5 +35,12 @@ export const enum IPositionsEnum {
     PR = 'Presidente',
     CRIN = 'Cargo Indireto',
     OTHR = 'Outro',
-    NA = 'Não sei'
+    NA = 'Não sei',
+    CDTOVRDR = 'Candidato - Vereador',
+    CDTOPFTO = 'Candidato - Prefeito',
+    CDTODPES = 'Candidato - Dep. Estadual',
+    CDTOGVNR = 'Candidato - Governador',
+    CDTODPFD = 'Candidato - Dep. Federal',
+    CDTOSNDR = 'Candidato - Senador',
+    CDTOPR = 'Candidato - Presidente'
 }

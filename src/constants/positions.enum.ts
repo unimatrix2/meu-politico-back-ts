@@ -1,7 +1,6 @@
 import { IPositionsEnum } from "../interfaces/enum";
 
 const electedPositionsEnum: IPositionsEnum[] = [
-    IPositionsEnum.CDTO,
     IPositionsEnum.VRDR,
     IPositionsEnum.PFTO,
     IPositionsEnum.DPES,
@@ -11,7 +10,14 @@ const electedPositionsEnum: IPositionsEnum[] = [
     IPositionsEnum.PR,
     IPositionsEnum.CRIN,
     IPositionsEnum.OTHR,
-    IPositionsEnum.NA
+    IPositionsEnum.NA,
+    IPositionsEnum.CDTOVRDR,
+    IPositionsEnum.CDTOPFTO,
+    IPositionsEnum.CDTODPES,
+    IPositionsEnum.CDTOGVNR,
+    IPositionsEnum.CDTODPFD,
+    IPositionsEnum.CDTOSNDR,
+    IPositionsEnum.CDTOPR
 ];
 
 export default electedPositionsEnum;
