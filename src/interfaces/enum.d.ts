@@ -9,7 +9,7 @@ export const enum IModerationEnum {
     Edited = 'editado',
     Archive = 'arquivar',
     Archived = 'arquivado',
-    Publish = 'autorizar',
+    Publish = 'publicar',
     Published = 'publicado'
 }
 
