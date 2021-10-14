@@ -1,0 +1,28 @@
+datasource db {
+	provider	=	"postgresql"
+	url	=	env("DATABASE_URL")
+}
+
+generator client {
+	provider = "prisma-client-js"
+}
+
+enum Privileges {
+	USER
+	ADMIN
+	MODERATOR
+}
+
+// Model is missing relation to news
+// because they will be remodeled
+model User {
+	id				Int				@id @default(autoincrement())
+	firstName	String		@db.VarChar(50)
+	lastName	String		@db.VarChar(100)
+	email			String		@unique
+	cpf				String		@unique @db.VarChar(14)
+	password	String		
+	role			Privileges
+	createdAt	DateTime	@db.Timestamp()	@default(now())
+	updatedAt	DateTime	@updatedAt
+}
