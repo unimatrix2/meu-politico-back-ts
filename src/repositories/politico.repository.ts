@@ -4,50 +4,54 @@ import { politicoCreateBody } from "../interfaces/politico";
 
 // Precisa testar!!
 export const search = async (query: string) => {
-  try {
-    const politicos = await Politico.find({
-      $or:[
-        {
-          fullName: {
-            $regex: query,
-            $options: 'i'
-          }
-				},{
-          socialName: {
-            $regex: query,
-            $options: 'i'
-          }
-        }
-      ]},{	
+	try {
+		const politicos = await Politico.find(
+			{
+				$or: [
+					{
+						fullName: {
+							$regex: query,
+							$options: "i",
+						},
+					},
+					{
+						socialName: {
+							$regex: query,
+							$options: "i",
+						},
+					},
+				],
+			},
+			{
 				_id: 1,
-        owner: 1,
-        status: 1,
-        history: 1,
-        province: 1,
-        fullname: 1,
-        imageURL: 1,
-        socialName: 1,
-        currentPosition: 1,
-  })
-		.populate({
-      path: 'owner',
-      select: {
-        role: 1,
-        lastName: 1,
-        firstName: 1,
-      }
-  });
-  if (politicos) {
-		return politicos;
+				owner: 1,
+				status: 1,
+				history: 1,
+				province: 1,
+				fullname: 1,
+				imageURL: 1,
+				socialName: 1,
+				currentPosition: 1,
+			}
+		).populate({
+			path: "owner",
+			select: {
+				role: 1,
+				lastName: 1,
+				firstName: 1,
+			},
+		});
+		if (politicos) {
+			return politicos;
+		}
+		return null;
+	} catch (error) {
+		throw new AppError({
+			message: "Não foi possível buscar os políticos",
+			type: "Politico-Repo-Buscar",
+			status: 500,
+		});
 	}
-	return null;
-  } catch (error) {
-    throw new AppError({
-      message: 'Não foi possível buscar os políticos',
-      type: 'Politico-Repo-Buscar',
-      status: 500
-    });
-  }
 };
 
 // Precisa testar!!
@@ -66,10 +70,10 @@ export const getOne = async (id: string) => {
 		});
 	} catch (error) {
 		throw new AppError({
-			message: 'Não foi possível encontrar o político',
-			type: 'Politico-Repo-Encontrar-ID',
-			status: 500
-    });
+			message: "Não foi possível encontrar o político",
+			type: "Politico-Repo-Encontrar-ID",
+			status: 500,
+		});
 	}
 };
 
@@ -80,17 +84,17 @@ export const create = async (body: politicoCreateBody) => {
 		await politico.save();
 		return;
 	} catch (err: any) {
-    if (err.keyPattern.officialInfoURL || err.keyPattern.imageURL) {
-      throw new AppError({
-        message: 'Político já está cadastrado',
-        type: 'Politico-Criar',
-        status: 400
-      });
-    }
+		if (err.keyPattern.officialInfoURL || err.keyPattern.imageURL) {
+			throw new AppError({
+				message: "Político já está cadastrado",
+				type: "Politico-Criar",
+				status: 400,
+			});
+		}
 		throw new AppError({
-			message: 'Não foi possível criar o político',
-			type: 'Politico-Criar',
-			status: 500
-    });
+			message: "Não foi possível criar o político",
+			type: "Politico-Criar",
+			status: 500,
+		});
 	}
 };
