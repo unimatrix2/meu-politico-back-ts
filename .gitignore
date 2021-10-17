@@ -4,3 +4,4 @@ build
 seeds
 migrations
 *.alz
+prisma
