@@ -1,6 +1,6 @@
-import { Politico } from "../models/Político.model";
-import AppError from "../errors/AppError";
-import { politicoCreateBody } from "../interfaces/politico";
+import { Politico } from '../models/Político.model';
+import AppError from '../errors/AppError';
+import { politicoCreateBody } from '../interfaces/politico';
 
 // Precisa testar!!
 export const search = async (query: string) => {
