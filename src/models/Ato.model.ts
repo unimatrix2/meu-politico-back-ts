@@ -9,15 +9,17 @@ import { Schema, model } from 'mongoose';
 
 /**
  * Definição do schema de ato
- * @param {string} description
- * @param {string} source
- * @param {array} news
- * @param {array} politicos
- * @param {string} owner
+ * @param {string} description Descrição do ato realizado por um político
+ * @param {string} officialSource Fonte oficial onde foi reportado o ato do político
+ * @param {array} news Notícias publicadas que referem ao ato do político
+ * @param {array} politicos Políticos envolvidos nesse ato. Idealmente contém apenas 1, mas serve para casos de co-autoria
+ * @param {string} owner ID do usuário que cadastrou o ato na plataforma
+ * @description No momento, o modelo de ato se baseia no princípio de que toda notícia parte de um ato, 
+ * mas nem todo ato é de fato
  */
 const AtoSchema = new Schema({
     description: { type: String, required: true },
-    source: { type: String, required: true },
+    officalSource: { type: String, required: true },
     news: [{ type: Schema.Types.ObjectId, ref: 'News' }],
     politicos: [{ type: Schema.Types.ObjectId, ref: 'Politico', required: true }],
     owner: { type: Schema.Types.ObjectId, ref: 'User', required: true },
