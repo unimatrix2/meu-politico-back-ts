@@ -20,8 +20,8 @@ const politicoSchema = new Schema({
     },
     history: [{
         position: { type: String, enum: electedPositionsEnum },
-        election_id: { type: String, required: true },
-        election_sequential: { type: String, required: true },
+        electionID: { type: Schema.Types.ObjectId, required: true, ref: 'Election' },
+        electionSequential: { type: String, required: true },
         province: { type: String, required: true },
         city: { type: String },
         period: {
