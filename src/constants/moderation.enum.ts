@@ -1,6 +1,6 @@
 import { IModerationEnum } from "../interfaces/enum";
 
-export const moderationEnum: IModerationEnum[] = [
+const moderationEnum: IModerationEnum[] = [
     IModerationEnum.Publish,
     IModerationEnum.Published,
     IModerationEnum.Edit,
