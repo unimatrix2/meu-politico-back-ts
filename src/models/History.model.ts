@@ -13,7 +13,8 @@ const historySchema = new Schema({
 		end: { type: Date, required: true },
 	},
 	party: { type: String, required: true },
-	politico: { type: Schema.Types.ObjectId, required: true }
+	politico: { type: Schema.Types.ObjectId, required: true },
+	lastEditBy: { type: Schema.Types.ObjectId, ref: 'User' }
 }, { timestamps: true });
 
 const History = model('Hisotry', historySchema);

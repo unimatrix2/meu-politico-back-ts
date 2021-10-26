@@ -22,7 +22,8 @@ const AtoSchema = new Schema({
     officalSource: { type: String, required: true },
     news: [{ type: Schema.Types.ObjectId, ref: 'News' }],
     politicos: [{ type: Schema.Types.ObjectId, ref: 'Politico', required: true }],
-    owner: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    creator: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    lastEditBy: { type: Schema.Types.ObjectId, ref: 'User' }
 }, { timestamps: true });
 
 const Ato = model('Act', AtoSchema);

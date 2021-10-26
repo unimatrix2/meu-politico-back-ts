@@ -7,7 +7,8 @@ const electionSchema = new Schema({
     versionDate:  { type: Date, required: true },
     type: { type: String, required: true, enum: electionEnum },
     term: { type: Number, required: true, enum: [1, 2] },
-    officialID: { type: String, required: true }
+    officialID: { type: String, required: true },
+    lastEditBy: { type: Schema.Types.ObjectId, ref: 'User' }
 }, { timestamps: true });
 
 const Election = model('Election', electionSchema);

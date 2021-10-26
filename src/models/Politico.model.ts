@@ -24,7 +24,6 @@ const politicoSchema = new Schema({
         required: true,
         default: moderationEnum[0]
     },
-    owner: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     officialInfoURL: { type: String, unique: true },
     imageURL: { type: String, required: true, unique: true },
     lastEditBy: { type: Schema.Types.ObjectId, ref: 'User' }

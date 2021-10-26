@@ -11,7 +11,7 @@ const noticiaSchema = new Schema({
         enum: ['autorizar', 'editar', 'arquivar', 'publicado', 'editado', 'arquivado'],
         required: true
     },
-    owner: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    creator: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     lastEditBy: { type: Schema.Types.ObjectId, ref: 'User' }
 }, { timestamps: true });
 
