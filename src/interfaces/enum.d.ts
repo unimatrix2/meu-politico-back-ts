@@ -44,3 +44,11 @@ export const enum IPositionsEnum {
     CDTOSNDR = 'Candidato - Senador',
     CDTOPR = 'Candidato - Presidente'
 }
+
+export const enum IElectionTypeEnum {
+	ORDN = 'Ordinárias Nacionais',
+	ORDM = 'Ordinárias Municipais',
+	SUPL = 'Suplementares',
+	PLEB = 'Plebiscito',
+	REFE = 'Referendo'
+}
