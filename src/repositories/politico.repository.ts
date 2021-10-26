@@ -24,9 +24,7 @@ export const search = async (query: string) => {
 			},
 			{
 				_id: 1,
-				owner: 1,
 				status: 1,
-				history: 1,
 				province: 1,
 				fullname: 1,
 				imageURL: 1,
@@ -34,7 +32,7 @@ export const search = async (query: string) => {
 				currentPosition: 1,
 			}
 		).populate({
-			path: "owner",
+			path: "lastEditBy",
 			select: {
 				role: 1,
 				lastName: 1,
