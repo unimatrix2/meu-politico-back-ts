@@ -1,12 +1,9 @@
 import { Schema, model } from 'mongoose';
 
 const noticiaSchema = new Schema({
+    act: [{ type: Schema.Types.ObjectId, ref: 'Act' }],
     headline: { type: String, required: true, min: 5, max: 100 },
     introduction: { type: String, required: true, max: 1000 },
-    category: {
-        type: String, enum: ['Positiva', 'Negativa', 'Corrupção', 'Promessa Cumprida', 'Promessa Descumprida'],
-        required: true
-    },
     sources: [{ type: String, required: true }],
     politicos: [{ type: Schema.Types.ObjectId, ref: 'Politico', required: true }],
     status: {
