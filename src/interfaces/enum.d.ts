@@ -46,9 +46,9 @@ export const enum IPositionsEnum {
 }
 
 export const enum IElectionTypeEnum {
-	ORDN = 'Ordinárias Nacionais',
-	ORDM = 'Ordinárias Municipais',
-	SUPL = 'Suplementares',
+	ORDN = 'Ordinária Nacional',
+	ORDM = 'Ordinária Municipal',
+	SUPL = 'Suplementar',
 	PLEB = 'Plebiscito',
 	REFE = 'Referendo'
 }
