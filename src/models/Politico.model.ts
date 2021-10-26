@@ -18,18 +18,6 @@ const politicoSchema = new Schema({
         enum: electedPositionsEnum,
         required: true
     },
-    history: [{
-        position: { type: String, enum: electedPositionsEnum },
-        electionID: { type: Schema.Types.ObjectId, required: true, ref: 'Election' },
-        electionSequential: { type: String, required: true },
-        province: { type: String, required: true },
-        city: { type: String },
-        period: {
-            begin: { type: Date },
-            end: { type: Date },
-        },
-        party: { type: String, required: true }
-    }],
     status: {
         type: String,
         enum: moderationEnum,
@@ -42,4 +30,6 @@ const politicoSchema = new Schema({
     lastEditBy: { type: Schema.Types.ObjectId, ref: 'User' }
 }, { timestamps: true });
 
-export const Politico = model('Politico', politicoSchema);
+const Politico = model('Politico', politicoSchema);
+
+export default Politico;

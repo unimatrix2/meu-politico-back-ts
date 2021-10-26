@@ -1,4 +1,4 @@
-import { Politico } from '../models/Político.model';
+import Politico from '../models/Politico.model';
 import AppError from '../errors/AppError';
 import { politicoCreateBody } from '../interfaces/politico';
 
