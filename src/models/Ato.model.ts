@@ -8,24 +8,31 @@
 import { Schema, model } from 'mongoose';
 
 /**
- * Definição do schema de ato
+ * @instance Instancia um schema que define as propriedades do modelo de Ato
+ * e é utilizado na API para realizar operações na coleção de atos.
  * @param {string} description Descrição do ato realizado por um político
  * @param {string} officialSource Fonte oficial onde foi reportado o ato do político
  * @param {array} news Notícias publicadas que referem ao ato do político
  * @param {array} politicos Políticos envolvidos nesse ato. Idealmente contém apenas 1, mas serve para casos de co-autoria
  * @param {string} owner ID do usuário que cadastrou o ato na plataforma
- * @description No momento, o modelo de ato se baseia no princípio de que toda notícia parte de um ato, 
+ * @description No momento, o modelo de ato se baseia no princípio de que toda notícia parte de um ato,
  * mas nem todo ato é de fato
  */
-const AtoSchema = new Schema({
-    description: { type: String, required: true },
-    officalSource: { type: String, required: true },
-    news: [{ type: Schema.Types.ObjectId, ref: 'News' }],
-    politicos: [{ type: Schema.Types.ObjectId, ref: 'Politico', required: true }],
-    creator: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    lastEditBy: { type: Schema.Types.ObjectId, ref: 'User' }
-}, { timestamps: true });
+const AtoSchema = new Schema(
+	{
+		description: { type: String, required: true },
+		officalSource: { type: String, required: true },
+		news: [{ type: Schema.Types.ObjectId, ref: 'News' }],
+		politicos: [
+			{ type: Schema.Types.ObjectId, ref: 'Politico', required: true },
+		],
+		historyRef: [{ type: Schema.Types.ObjectId, ref: 'History', required: true }],
+		creator: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+		lastEditBy: { type: Schema.Types.ObjectId, ref: 'User' },
+	},
+	{ timestamps: true }
+);
 
-const Ato = model('Act', AtoSchema);
+const Ato = model("Act", AtoSchema);
 
 export default Ato;
