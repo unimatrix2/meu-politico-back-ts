@@ -1,7 +1,6 @@
 import { Schema, model } from 'mongoose';
 
 import electedPositionsEnum from '../constants/positions.enum';
-import statesEnum from '../constants/states.enum';
 import moderationEnum from '../constants/moderation.enum';
 
 
@@ -9,10 +8,14 @@ import moderationEnum from '../constants/moderation.enum';
 const politicoSchema = new Schema({
     fullName: { type: String, required: true, min: 10, max: 80 },
     socialName: { type: String, max: 80 },
-    cpf: { type: String, min:11, max: 11, required: true },
+    cpf: { type: String, min:11, max: 11, required: true, unique: true },
     race: { type: String, required: true },
     gender: { type: String, required: true },
-    education: {type: String, required: true},
+    education: { type: String, required: true },
+    ocupation: { type: String, required: true },
+    birthDate: { type: Date, required: true },
+    nationality: { type: String, required: true },
+    civilStatus: { type: String, required: true },
     currentPosition: {
         type: String,
         enum: electedPositionsEnum,
@@ -25,7 +28,7 @@ const politicoSchema = new Schema({
         default: moderationEnum[0]
     },
     officialInfoURL: { type: String, unique: true },
-    imageURL: { type: String, required: true, unique: true },
+    imageURL: { type: String, unique: true },
     lastEditBy: { type: Schema.Types.ObjectId, ref: 'User' }
 }, { timestamps: true });
 
