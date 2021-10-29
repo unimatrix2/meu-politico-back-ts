@@ -1,18 +1,18 @@
 import { Schema, model } from 'mongoose';
 
 import electedPositionsEnum from '../constants/positions.enum';
+import statesEnum from '../constants/states.enum';
 
 const historySchema = new Schema({
 	position: { type: String, enum: electedPositionsEnum, required: true },
 	electionID: { type: Schema.Types.ObjectId, required: true, ref: 'Election' },
-	electionSequential: { type: String, required: true },
-	province: { type: String, required: true },
+	sequentialID: { type: String, required: true },
+	province: { type: String, required: true, enum: statesEnum },
     city: { type: String },
-	period: {
-		begin: { type: Date, required: true },
-		end: { type: Date, required: true },
-	},
 	party: { type: String, required: true },
+	coalition: { type: String },
+	coalitionParties: { type: String },
+	reelection: { type: Boolean, required: true },
 	politico: { type: Schema.Types.ObjectId, required: true },
 	lastEditBy: { type: Schema.Types.ObjectId, ref: 'User' }
 }, { timestamps: true });
