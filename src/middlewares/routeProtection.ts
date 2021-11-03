@@ -1,10 +1,12 @@
-import { NextFunction, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
+
 import AppError from '../errors/AppError';
 import { verify } from '../utils/tokenManager';
+import { verify as removeLayer } from '../utils/passwordManager';
 
-export const routeProtection = (req: any, res: Response, nxt: NextFunction) => {
+export const routeProtection = async (req: any, res: Response, nxt: NextFunction) => {
 	try {
-		const { token } = req.signedCookies;
+		const token = req.headers.authorization;
 		if (!token) {
 			throw new AppError({
 				message: 'Não há credenciais de acesso',

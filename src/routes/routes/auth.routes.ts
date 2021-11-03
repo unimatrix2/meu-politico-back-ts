@@ -27,13 +27,10 @@ router.post('/acesso', validateLoginParams, async (req: any, res: Response, next
 	try {
 		const { body } = req;
 		const loggedUser = await authenticateUser(body);
-		res.cookie('token', loggedUser?.newToken, {
-			secure: true,
-			signed: true,
-			httpOnly: true,
-			sameSite: 'none',
-			maxAge: process.env.COOKIE_EXPIRY
-		}).status(200).json(loggedUser?.userData);
+		res
+			.header('Authorization', loggedUser.newToken)
+			.status(200)
+			.json(loggedUser.userData);
 	} catch (error: any) {
 		res.status(error.status).json(error);
 	};
@@ -44,13 +41,10 @@ router.use(routeProtection);
 router.get('/acesso', async (req: any, res: Response, nxt: NextFunction) => {
 	try {
 		const user: newCredentials = await provideNewSessionInfo(req.user.id);
-		res.status(200).cookie('token', user.newToken, {
-			secure: true,
-			signed: true,
-			httpOnly: true,
-			sameSite: 'none',
-			maxAge: process.env.COOKIE_EXPIRY
-		}).json(user.userData);
+		res
+			.header('Authorization', user.newToken)
+			.status(200)
+			.json(user.userData);
 	} catch (error: any) {
 		res.status(error.status).json(new AppError(error));
 	}
@@ -59,13 +53,10 @@ router.get('/acesso', async (req: any, res: Response, nxt: NextFunction) => {
 router.patch('/atualizar/dados', async (req: any, res: Response) => {
 	try {
 		const updatedUser = await updateUserInfo(req.body);
-		res.status(200).cookie('token', updatedUser.newToken, {
-			secure: true,
-			signed: true,
-			httpOnly: true,
-			sameSite: 'none',
-			maxAge: process.env.COOKIE_EXPIRY
-		}).json(updatedUser.userData);
+		res
+			.header('Authorization', updatedUser.newToken)
+			.status(200)
+			.json(updatedUser.userData);
 	} catch (error: any) {
 		res.status(error.status).json(new AppError(error));
 	}
