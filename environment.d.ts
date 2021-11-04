@@ -6,7 +6,7 @@ declare global {
 			PORT: number;
 			FRONT_END_URL: string;
 			MONGODB_URI: string;
-			COOKIE_SECRET: string;
+			LAYER_SECRET: string;
 			TOKEN_SECRET: Secret;
 			TOKEN_EXPIRATION: string;
 			COOKIE_EXPIRY: number;
