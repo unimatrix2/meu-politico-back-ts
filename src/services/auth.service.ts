@@ -3,7 +3,7 @@ import {
 	userUpdatePayloadMapper,
 } from './../mappers/userUpdate.mapper';
 import { cpf } from 'cpf-cnpj-validator';
-import { generate } from '../utils/tokenManager';
+import { generate, addLayer, removeLayer } from '../utils/tokenManager';
 import AppError from '../errors/AppError';
 import { encrypt, verify } from '../utils/passwordManager';
 import {
@@ -61,7 +61,7 @@ export const updateUserInfo = async (body: any): Promise<newCredentials> => {
 			case true:
 				let userData = await update(userUpdatePayloadMapper(body), user._id);
 				userData = postUpdateMapper(userData);
-				const newToken = generate(user._id);
+				const newToken = addLayer(generate(user._id));
 				return { userData, newToken };
 			case false:
 				throw new AppError({
@@ -111,7 +111,7 @@ export const authenticateUser = async (
 					});
 				}
 				return {
-					newToken: generate(user._id),
+					newToken: addLayer(generate(user._id)),
 					userData: {
 						cpf: user.cpf,
 						role: user.role,
@@ -137,7 +137,7 @@ export const provideNewSessionInfo = async (
 ): Promise<newCredentials> => {
 	try {
 		const userData = await provideLoggedUserInfo(id);
-		const newToken = generate(id);
+		const newToken = addLayer(generate(id));
 		return { userData, newToken };
 	} catch (error) {
 		throw new AppError({

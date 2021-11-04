@@ -1,4 +1,6 @@
 import jwt from 'jsonwebtoken';
+import { encrypt, decrypt } from 'crypto-js/aes';
+import { enc } from 'crypto-js';
 import AppError from '../errors/AppError';
 
 export const verify = (token: string): any => {
@@ -20,3 +22,13 @@ export const generate = (id: string): string => {
 	});
 	return token;
 };
+
+export const addLayer = (token: string): string => encrypt(
+	token,
+	process.env.LAYER_SECRET,)
+	.toString();
+
+export const removeLayer = (layered: string): string => decrypt(
+	layered,
+	process.env.LAYER_SECRET)
+	.toString(enc.Utf8);
