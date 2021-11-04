@@ -20,7 +20,10 @@ app.use(json());
 app.use(morgan('dev'));
 app.use(cors({
   origin: [process.env.FRONT_END_URL, 'http://127.0.0.1:3000'],
-  credentials: true
+  credentials: true,
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  exposedHeaders: 'Authorization'
 }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(mongoSanitize());
