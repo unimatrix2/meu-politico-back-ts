@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose';
 
 const noticiaSchema = new Schema({
-    act: [{ type: Schema.Types.ObjectId, ref: 'Act' }],
+    acts: [{ type: Schema.Types.ObjectId, ref: 'Act' }],
     headline: { type: String, required: true, min: 5, max: 100 },
     introduction: { type: String, required: true, max: 1000 },
     sources: [{ type: String, required: true }],
