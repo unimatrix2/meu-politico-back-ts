@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+import moderationEnum from '../constants/moderation.enum';
 
 const noticiaSchema = new Schema({
     acts: [{ type: Schema.Types.ObjectId, ref: 'Act' }],
@@ -8,8 +9,9 @@ const noticiaSchema = new Schema({
     politicos: [{ type: Schema.Types.ObjectId, ref: 'Politico', required: true }],
     status: {
         type: String,
-        enum: ['autorizar', 'editar', 'arquivar', 'publicado', 'editado', 'arquivado'],
-        required: true
+        enum: moderationEnum,
+        required: true,
+        default: moderationEnum[0]
     },
     creator: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     lastEditBy: { type: Schema.Types.ObjectId, ref: 'User' }
