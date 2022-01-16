@@ -9,7 +9,7 @@ const userSchemaValidation = {
 		.string()
 		.min(8)
 		.max(200)
-		.pattern(/[A-Z0-9#%&*@!]/),
+		.pattern(/[A-Za-z0-9#%&*@!]/),
 };
 
 export const signupSchema = joi
